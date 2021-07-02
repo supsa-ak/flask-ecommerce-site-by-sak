@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% block title %} {{ title }} {% endblock title %}
+
+{% block content %} 
+<!-- Insert -->
+<div class="container">
+    <h1>Add Products Here...</h1>
+    <br>
+    <form action="/admin" method="POST">
+        <input type="text" placeholder="Product Name" name="pname">
+        <input type="text" placeholder="Image url" name="imgurl">
+        <input type="text" placeholder="Price" name="price">
+        <input type="submit" value="Add Product">
+    </form>     
+</div>
+<!-- Show Products  -->
+<div class="container">
+    <h1>All Products</h1>
+    <div class="container">
+        {% for i in products %}
+            <h3>{{ i.productname }}</h3>
+            <img src="{{ i.imageurl }}" alt="product image" width="200">
+            <h6>Price: {{ i.price }}$</h6>
+            <a href="/update/{{ i.id }}">Update</a>
+            <a href="/delete/{{ i.id }}">Delete</a>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock content %}
