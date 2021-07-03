@@ -30,26 +30,37 @@ class Shop(db.Model):
 @app.route('/')
 def home():
     title = "Home"
-    return render_template('index.html', title=title)
+    return redirect(url_for('product'))
+
 
 @app.route('/cart', methods=['POST', 'GET'])
 def cart():
     title = "Cart"
-    total = 0
+    total = 0 
     if 'Shoppingcart' not in session or len(session['Shoppingcart'])<=0:
         return redirect(url_for('home'))
     for key, product in session['Shoppingcart'].items():
         total += float(product['price']) 
-    return render_template('cart.html', title=title, total=total)
+        t = "%.2f" % total
+    return render_template('cart.html', title=title, total=t)
 
 @app.route('/checkout', methods=['POST', 'GET'])
 def checkout():
     title = "Checkout"
-    return render_template('checkout.html', title=title)
+    t = 0
+    try:
+        if request.method == "POST":
+            t = request.form.get('total')
+            print(t)
+            return render_template('checkout.html', title=title, t=t)
+    except:
+        return "Cant add total"
+
+    return render_template('checkout.html', title=title, t=t)
 
 @app.route('/product', methods=['POST', 'GET'])
 def product():
-    title = "Products"
+    title = "Home | Products"
     products = Shop.query.order_by(Shop.date_created)
     try:
         id  = request.form.get('pid')
@@ -73,14 +84,15 @@ def product():
         print(e)
     return render_template('product.html', title=title, products=products)
 
-@app.route('/productdetails')
-def productdetails():
+@app.route('/productdetails/<int:id>', methods=['GET', 'POST'])
+def productdetails(id):
     title = "Product Details"
-    return render_template('productdetails.html', title=title)
+    productDetails = Shop.query.get_or_404(id)
+    return render_template('productdetails.html', title=title, productDetails=productDetails)
 
 @app.route('/success')
 def success():
-    title = "Success!"
+    title = "Success"
     return render_template('success.html', title=title)
 
 @app.route('/admin', methods=['POST', 'GET'])
@@ -149,5 +161,14 @@ def delcartitem(id):
         return redirect(url_for('cart'))
 
 
+@app.route('/clearcart')
+def clearcart():
+    title = "clearcart"
+    try:
+        session.pop('Shoppingcart', None)
+        return redirect(url_for('home'))
+    except Exception as e:
+        print(e)
+    return redirect(url_for('home'))
 
 app.run(debug=True)

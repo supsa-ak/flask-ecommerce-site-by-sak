@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% block title %} {{ title }} {% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="container">
+        <h3>{{ productDetails.productname }}</h3>
+        <img src="{{ productDetails.imageurl }}" alt="product image" width="600">
+        <h6>Price: {{ productDetails.price }}$</h6>
+        <form action="{{url_for('product')}}" method="post">
+            <input name="pid" type="hidden" value="{{ productDetails.id }}">
+            <input type="submit" value="Add to Cart">
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

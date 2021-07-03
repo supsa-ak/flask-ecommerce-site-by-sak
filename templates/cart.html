@@ -1,6 +1,12 @@
 {% extends 'index.html' %}
 {% block title %} {{ title }} {% endblock title %}
-
+{% block css %}
+<style>
+    a:link {
+    text-decoration: none;
+  }
+</style>
+{% endblock css %}
 {% block content %}
 <div class="container">
     <div class="row">
@@ -14,7 +20,7 @@
             </thead>
             <tbody>
                 {% for key, product in session['Shoppingcart'].items() %}
-                <tr>                    
+                <tr>
                     <td>{{ loop.index }}</td>
                     <td><img src="{{ product.imgurl }}" alt="image" width="50"></td>
                     <td>{{ product.name }}</td>
@@ -24,10 +30,17 @@
                 {% endfor %}
                 <tr>
                     <td></td>
-                    <td><a href="/checkout">Checkout</a></td>
-                    <td><a href="/clearcart">Cancel (Clear Cart)</a></td>
+                    <td>
+                        <form action="/checkout" method="POST">
+                            <input type="hidden" name="total" value="{{total}}">
+                            <input type="submit" href="/checkout" value="Checkout">
+                        </form>
+                    </td>
+                    <td><a href="{{url_for('clearcart')}}">Cancel (Clear Cart)</a></td>
                     <td></td>
-                    <td><h4>Grand Total: ${{total}}</h4></td>
+                    <td>
+                        <h4>Grand Total: ${{total}}</h4>
+                    </td>
                     <td></td>
                 </tr>
             </tbody>
