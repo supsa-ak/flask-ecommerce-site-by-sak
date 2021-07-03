@@ -10,18 +10,26 @@
                 <th>Image</th>
                 <th>Name</th>
                 <th>Price</th>
-                <th>Update</th>
                 <th>Remove</th>
             </thead>
             <tbody>
-                {% for product in session['Shoppingcart'].items() %}
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
+                {% for key, product in session['Shoppingcart'].items() %}
+                <tr>                    
+                    <td>{{ loop.index }}</td>
+                    <td><img src="{{ product.imgurl }}" alt="image" width="50"></td>
+                    <td>{{ product.name }}</td>
+                    <td>${{ product.price }}</td>
+                    <td><a href="{{url_for('delcartitem', id=key)}}">Remove</a></td>
+                </tr>
                 {% endfor %}
+                <tr>
+                    <td></td>
+                    <td><a href="/checkout">Checkout</a></td>
+                    <td><a href="/clearcart">Cancel (Clear Cart)</a></td>
+                    <td></td>
+                    <td><h4>Grand Total: ${{total}}</h4></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>

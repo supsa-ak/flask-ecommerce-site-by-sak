@@ -35,11 +35,12 @@ def home():
 @app.route('/cart', methods=['POST', 'GET'])
 def cart():
     title = "Cart"
-    # try:    
-    #     return redirect('/cart')                
-    # except:
-    #     return "There was a problem adding Product to cart"
-    return render_template('cart.html', title=title)
+    total = 0
+    if 'Shoppingcart' not in session or len(session['Shoppingcart'])<=0:
+        return redirect(url_for('home'))
+    for key, product in session['Shoppingcart'].items():
+        total += float(product['price']) 
+    return render_template('cart.html', title=title, total=total)
 
 @app.route('/checkout', methods=['POST', 'GET'])
 def checkout():
@@ -108,7 +109,7 @@ def update(id):
     title = "Update Product"
     product_to_update = Shop.query.get_or_404(id)
     if request.method == "POST":
-        product_to_update.name = request.form['pname']
+        product_to_update.productname = request.form['pname']
         product_to_update.imageurl = request.form['imgurl']
         product_to_update.price = request.form['price']
         try:
@@ -131,6 +132,21 @@ def delete(id):
     except:
         return "There was a problem deleting Product"
     return render_template('admin.html', title=title)
+
+@app.route('/delcartitem/<int:id>')
+def delcartitem(id):
+    title = "Delete Cart Item!"
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return render_template(url_for('home'))
+    try:
+        session.modified = True
+        for key, item in session['Shoppingcart'].items():
+            if int(key) == id:
+                session['Shoppingcart'].pop(key, None)
+                return redirect(url_for('cart'))
+    except Exception as e:
+        print(e)
+        return redirect(url_for('cart'))
 
 
 
