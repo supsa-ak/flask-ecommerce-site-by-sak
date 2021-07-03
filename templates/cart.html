@@ -1,16 +1,29 @@
 {% extends 'index.html' %}
 {% block title %} {{ title }} {% endblock title %}
 
-{% block content %} 
+{% block content %}
 <div class="container">
-    <h1>Products on Our Website</h1>
-    <div class="container">
-        {% for i in cart %}
-            <h3>{{ i.productname }}</h3>
-            <img src="{{ i.imageurl }}" alt="product image" width="200">
-            <h6>Price: {{ i.price }}$</h6>
-        {% endfor %}
+    <div class="row">
+        <table class="table table-sm">
+            <thead>
+                <th>Sr</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Update</th>
+                <th>Remove</th>
+            </thead>
+            <tbody>
+                {% for product in session['Shoppingcart'].items() %}
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
-
 {% endblock content %}

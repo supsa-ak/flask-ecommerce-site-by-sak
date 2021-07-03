@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from datetime import datetime
@@ -9,6 +9,12 @@ app.config['SECRET_KEY'] = 'qpowiecmnIhpjasdIaY'
 
 db = SQLAlchemy(app)
 
+def MagerDicts(dict1,dict2):
+    if isinstance(dict1, list) and isinstance(dict2,list):
+        return dict1  + dict2
+    if isinstance(dict1, dict) and isinstance(dict2, dict):
+        return dict(list(dict1.items()) + list(dict2.items()))
+
 class Shop(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     productname = db.Column(db.String(200), nullable=False)
@@ -17,7 +23,7 @@ class Shop(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return '<Shop %r>' % self.productname
+        return '<Shop %r>' % self.id
 
 # db.create_all()
 
@@ -26,29 +32,44 @@ def home():
     title = "Home"
     return render_template('index.html', title=title)
 
-@app.route('/cart/<int:id>', methods=['POST', 'GET'])
-def cart(id):
+@app.route('/cart', methods=['POST', 'GET'])
+def cart():
     title = "Cart"
-
-    cart = {}
-    product_to_cart = Shop.query.get_or_404(id)
-    print(product_to_cart, "sarthak")
-    try:    
-        cart.update(product_to_cart)
-        return redirect('/cart')                
-    except:
-        return "There was a problem adding Product to cart"
-    return render_template('cart.html', title=title, cart=cart)
+    # try:    
+    #     return redirect('/cart')                
+    # except:
+    #     return "There was a problem adding Product to cart"
+    return render_template('cart.html', title=title)
 
 @app.route('/checkout', methods=['POST', 'GET'])
 def checkout():
     title = "Checkout"
     return render_template('checkout.html', title=title)
 
-@app.route('/product')
+@app.route('/product', methods=['POST', 'GET'])
 def product():
-    title = "Product"
+    title = "Products"
     products = Shop.query.order_by(Shop.date_created)
+    try:
+        id  = request.form.get('pid')
+        if id and request.method == "POST":
+            product_cart = Shop.query.filter_by(id=id).first()
+            DictItems = {id:{'name':product_cart.productname, 'imgurl':product_cart.imageurl, 'price':product_cart.price}}
+            if 'Shoppingcart' in session:
+                print(session['Shoppingcart'])
+                if id in session['Shoppingcart']:
+                    for key, item in session['Shoppingcart'].items():
+                        if int(key) == int(id):
+                            session.modified = True
+                            item['quantity'] += 1
+                else:
+                    session['Shoppingcart'] = MagerDicts(session['Shoppingcart'], DictItems)
+                    return redirect(request.referrer)
+            else:
+                session['Shoppingcart'] = DictItems
+                return redirect(request.referrer)
+    except Exception as e:
+        print(e)
     return render_template('product.html', title=title, products=products)
 
 @app.route('/productdetails')
@@ -110,5 +131,7 @@ def delete(id):
     except:
         return "There was a problem deleting Product"
     return render_template('admin.html', title=title)
+
+
 
 app.run(debug=True)

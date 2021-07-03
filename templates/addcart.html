@@ -1,18 +1,14 @@
 {% extends 'index.html' %}
 {% block title %} {{ title }} {% endblock title %}
 
-{% block content %}
+{% block content %} 
 <div class="container">
-    <h1>Products on Our Website</h1>
+    <h1>Products in Your Cart</h1>
     <div class="container">
-        {% for i in products %}
+        {% for i in cart %}
             <h3>{{ i.productname }}</h3>
             <img src="{{ i.imageurl }}" alt="product image" width="200">
             <h6>Price: {{ i.price }}$</h6>
-            <form action="/product" method="post">
-                <input name="pid" type="hidden" value="{{ i.id }}">
-                <input type="submit" value="Add to Cart">
-            </form>
         {% endfor %}
     </div>
 </div>
