@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 from flask_http_response import success, result, error
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
@@ -171,6 +171,14 @@ def clearcart():
     except Exception as e:
         print(e)
     return redirect(url_for('home'))
+
+@app.route('/shop_api/<int:id>')
+def shop_api(id):
+    title = "Json"
+    product_to_api = Shop.query.get_or_404(id)
+    json_res = {id:{'name':product_to_api.productname, 'imgurl':product_to_api.imageurl, 'price':product_to_api.price}}
+
+    return jsonify(json_res)
 
 ''' # Payment gateway Response 200 Success (strip gateway)
 @app.route('/payment_webhook', methods=['POST'])
