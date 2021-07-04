@@ -1,7 +1,7 @@
 # flask-ecommerce-site-by-sak
-Setup Project in Production Server (LocalHost) Steps:
+Setup Project in Production Server (LocalHost) Steps
 
-Requirements: Python 3.8 Interpreter
+Requirements-> Python 3.8 Interpreter
 
 Clone Repository 
 
@@ -35,12 +35,12 @@ Don't forget to activate virtual environment after closing terminal
     - Homepage is redirected to product page where list of 20 products is shown
     
 2 to go to admin -> 127.0.0.1:5000/admin 
-    Operations: CRUD
+    - Operations CRUD
     - Form to add new product to website 
-        Can add:
-    - Name of product
-        - External image link
-        - Price
+        Can add
+        - Name of product
+            - External image link
+            - Price
     - Can see previously added products on website 
     - Update button to update product on website
     - Delete product from website
