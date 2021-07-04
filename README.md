@@ -6,9 +6,7 @@ Requirements-> Python 3.8 Interpreter
 
 Clone Repository 
 
-$git clone https://github.com/supsa-ak/flask-ecommerce-site-by-sak/
-
-
+$git clone https://github.com/supsa-ak/flask-ecommerce-site-by-sak/ \\
 
 Go to directory-> flask-ecommerce-site-by-sak
 
