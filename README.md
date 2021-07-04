@@ -6,29 +6,30 @@ Requirements-> Python 3.8 Interpreter
 
 Clone Repository 
 
--$git clone https://github.com/supsa-ak/flask-ecommerce-site-by-sak/  
+- $git clone https://github.com/supsa-ak/flask-ecommerce-site-by-sak/  
 
 Go to directory-> flask-ecommerce-site-by-sak
 
 Create Virtual Environment
 
--$virtualenv myenv  
+- $virtualenv myenv  
 
 Activate Virtual Environment 
 
-$myenv/Scripts/activate
+- $myenv/Scripts/activate
 
 Install packages 
 
-$pip install -r requirements.txt
+- $pip install -r requirements.txt
 
 Run the Flask app 
 
-$python run.py
+- $python run.py
 
 Open localhost in browser 
 
 127.0.0.1:5000/
+
 
 Don't forget to activate virtual environment after opening terminal
 
