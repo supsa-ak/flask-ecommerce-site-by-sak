@@ -31,10 +31,10 @@ Open localhost in browser
 
 Don't forget to activate virtual environment after closing terminal
 
-1 Home 
+1. Home
     - Homepage is redirected to product page where list of 20 products is shown
     
-2 to go to admin -> 127.0.0.1:5000/admin 
+2. to go to admin 127.0.0.1:5000/admin 
     - Operations CRUD
     - Form to add new product to website 
         Can add
