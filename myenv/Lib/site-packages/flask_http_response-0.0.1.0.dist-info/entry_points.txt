@@ -1,0 +1,3 @@
+[console_scripts]
+flask_http_response = flask_http_response.main:main
+

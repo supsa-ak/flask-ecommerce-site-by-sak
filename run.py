@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, url_for
+from flask_http_response import success, result, error
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from datetime import datetime
@@ -22,7 +23,7 @@ class Shop(db.Model):
     price = db.Column(db.Integer, nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __repr__(self):
+    def __repr__(self): 
         return '<Shop %r>' % self.id
 
 # db.create_all()
@@ -171,4 +172,38 @@ def clearcart():
         print(e)
     return redirect(url_for('home'))
 
+''' # Payment gateway Response 200 Success (strip gateway)
+@app.route('/payment_webhook', methods=['POST'])
+def payment_webhook():
+    print('WEBHOOK CALLED')
+    if request.content_length > 1024 * 1024:
+        print('REQUEST TOO BIG')
+        abort(400)
+    payload = request.get_data()
+    sig_header = request.environ.get('HTTP_STRIPE_SIGNATURE')
+    endpoint_secret = 'YOUR_ENDPOINT_SECRET'
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        print('INVALID PAYLOAD')
+        return {}, 400
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        print('INVALID SIGNATURE')
+        return {}, 400
+
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        print(session)
+        line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
+        print(line_items['data'][0]['description'])
+
+    return redirect(url_for('/success')), success.return_response(message='Successfully Completed', status=200)
+'''
 app.run(debug=True)

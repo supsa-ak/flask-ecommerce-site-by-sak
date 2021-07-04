@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% block css %} {% endblock css %}
     <style>
-        h6{
+        h6 {
             font-size: large;
             font-family: 'Courier New', Courier, monospace;
         }
+
+        a {
+            text-decoration: none;
+        }
     </style>
-    <title>{% block title %} {% endblock title %}</title>      
+    <title>{% block title %} {% endblock title %}</title>
 </head>
+
 <body>
+    {% block nav %}
     <nav>
-        <a href="/cart">Cart ({{ session['Shoppingcart']|length }})</a>
+        <a href="{{url_for('home')}}">Home</a>
+        <a href="/product">Products<a>
+        <a href="/cart">Cart({{ session['Shoppingcart']|length }})</a>
     </nav>
+    {% endblock nav %}
     {% block content %} {% endblock content %}
 </body>
 

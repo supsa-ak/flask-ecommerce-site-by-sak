@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: flask-http-response
+Version: 0.0.1.0
+Summary: UNKNOWN
+Home-page: https://github.com/raisulru/flask-http-response.git
+Author: Raisul Islam
+Author-email: raisulru10@gmail.com
+License: License :: OSI Approved :: MIT License
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: flask
+
+# Flask http response
+A Flask http custom response
+
+## Description
+This is a flask http custom reponse made by flask jsonify module.
+
+## Dependencies
+Flask
+
+## Uses
+Install it by runing
+- `pip install flask-http-response`
+
+Import into your project
+- `from flask_http_response import success, result, error`
+
+Use it in your http response
+- `return success.return_response(message='Successfully Completed', status=200)`
+
+If you use any type of response without passing parameter into it. No problem it will always return a default message. For `result.return_response()` you can pass data or object as a message into it.
+
+

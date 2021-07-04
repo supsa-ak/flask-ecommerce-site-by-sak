@@ -1,12 +1,6 @@
 {% extends 'index.html' %}
 {% block title %} {{ title }} {% endblock title %}
-{% block style %} 
-<style>
-    a{
-        text-decoration: none;
-    }
-</style>
- {% endblock style %}
+
 {% block content %}
 <div class="container">
     <h1>Products on Our Website</h1>
@@ -14,7 +8,7 @@
         {% for i in products %}
             <h3><a href="productdetails/{{i.id}}">{{ i.productname }}</a></h3>
             <img src="{{ i.imageurl }}" alt="product image" width="200">
-            <h6>Price: {{ i.price }}$</h6>
+            <h6 style="margin:10px">Price: {{ i.price }}$</h6>
             <form action="/product" method="post">
                 <input name="pid" type="hidden" value="{{ i.id }}">
                 <input type="submit" value="Add to Cart">
