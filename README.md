@@ -1,31 +1,44 @@
 # flask-ecommerce-site-by-sak
 Setup Project in Production Server (LocalHost) Steps
+Just follow this step No need to Worry 
 
 Requirements-> Python 3.8 Interpreter
 
-
+Step 1:
 Clone Repository 
 
 - $git clone https://github.com/supsa-ak/flask-ecommerce-site-by-sak/  
 
+
+Step 2:
 Go to directory-> flask-ecommerce-site-by-sak
 
+
+Step 3:
 Create Virtual Environment
 
 - $virtualenv myenv  
 
+
+Step 4:
 Activate Virtual Environment 
 
 - $myenv/Scripts/activate
 
+
+Step 5:
 Install packages 
 
 - $pip install -r requirements.txt
 
+
+Step 6:
 Run the Flask app 
 
 - $python run.py
 
+
+Step 7:
 Open localhost in browser 
 
 127.0.0.1:5000/
