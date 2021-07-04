@@ -1,6 +1,10 @@
 # flask-ecommerce-site-by-sak
 Setup Project in Production Server (LocalHost) Steps
-Just follow this step No need to Worry 
+
+
+Just follow this steps No need to Worry 
+
+
 
 Requirements-> Python 3.8 Interpreter
 
