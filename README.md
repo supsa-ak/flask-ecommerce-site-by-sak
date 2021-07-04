@@ -41,8 +41,8 @@ Don't forget to activate virtual environment after opening terminal
     - Form to add new product to website 
         Can add
         - Name of product
-            - External image link
-            - Price
+        - External image link
+        - Price
     - Can see previously added products on website 
     - Update button to update product on website
     - Delete product from website
