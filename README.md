@@ -2,7 +2,7 @@
 Setup Project in Production Server (LocalHost) Steps
 
 
-Just follow this steps No need to Worry 
+Just copy-paste this steps No need to Worry 
 
 
 
