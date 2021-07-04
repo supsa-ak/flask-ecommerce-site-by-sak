@@ -6,13 +6,13 @@ Requirements-> Python 3.8 Interpreter
 
 Clone Repository 
 
-$git clone https://github.com/supsa-ak/flask-ecommerce-site-by-sak/  
+-$git clone https://github.com/supsa-ak/flask-ecommerce-site-by-sak/  
 
 Go to directory-> flask-ecommerce-site-by-sak
 
 Create Virtual Environment
 
-$virtualenv myenv  
+-$virtualenv myenv  
 
 Activate Virtual Environment 
 
