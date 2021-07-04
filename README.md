@@ -75,3 +75,6 @@ Don't forget to activate virtual environment after opening terminal
         - remove all items from cart
     - checkout button
         - goes to checkout page to place a card number
+5. Json response api
+    -  Go to http://127.0.0.1:5000/shop_api/<id of product>
+        - It will give information of product in json format as api 
