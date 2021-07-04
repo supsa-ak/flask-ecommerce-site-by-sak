@@ -3,9 +3,12 @@ Setup Project in Production Server (LocalHost) Steps
 
 Requirements-> Python 3.8 Interpreter
 
+
 Clone Repository 
 
 $git clone https://github.com/supsa-ak/flask-ecommerce-site-by-sak/
+
+
 
 Go to directory-> flask-ecommerce-site-by-sak
 
@@ -29,7 +32,7 @@ Open localhost in browser
 
 127.0.0.1:5000/
 
-Don't forget to activate virtual environment after closing terminal
+Don't forget to activate virtual environment after opening terminal
 
 1. Home
     - Homepage is redirected to product page where list of 20 products is shown
