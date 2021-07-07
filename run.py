@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, session, url_for, jsonify, flash
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify, flash, abort
 from flask_http_response import success, result, error
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from datetime import datetime
 from flask_migrate import Migrate
+from requests.exceptions import Timeout
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
@@ -35,8 +36,6 @@ class Shop(db.Model):
 def home():
     title = "Home"
     return redirect(url_for('product'))
-
-total = 0
 
 @app.route('/total')
 def totalfun():
@@ -95,11 +94,19 @@ def productdetails(id):
     productDetails = Shop.query.get_or_404(id)
     return render_template('productdetails.html', title=title, productDetails=productDetails)
 
-@app.route('/success')
+@app.route('/success', methods=['POST'])
 def success():
     title = "Success"
-    return render_template('success.html', title=title)
-
+    if request.method == "POST":
+        purchase = request.form.get('purchase')
+        t = totalfun()
+        if purchase == t:
+            return render_template('success.html', title=title, purchase=purchase)
+        elif purchase != t:
+            abort(417)
+        else: 
+            return render_template('problem.html')
+    
 @app.route('/admin', methods=['POST', 'GET'])
 def admin():
     title = "Admin"
@@ -185,38 +192,29 @@ def shop_api(id):
 
     return jsonify(json_res)
 
-''' # Payment gateway Response 200 Success (strip gateway)
-@app.route('/payment_webhook', methods=['POST'])
-def payment_webhook():
-    print('WEBHOOK CALLED')
-    if request.content_length > 1024 * 1024:
-        print('REQUEST TOO BIG')
-        abort(400)
-    payload = request.get_data()
-    sig_header = request.environ.get('HTTP_STRIPE_SIGNATURE')
-    endpoint_secret = 'YOUR_ENDPOINT_SECRET'
-    event = None
+@app.errorhandler(417)
+def page_not_found(e):
+   
+    return render_template('code_417.html'), 417
 
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, endpoint_secret
-        )
-    except ValueError as e:
-        # Invalid payload
-        print('INVALID PAYLOAD')
-        return {}, 400
-    except stripe.error.SignatureVerificationError as e:
-        # Invalid signature
-        print('INVALID SIGNATURE')
-        return {}, 400
+@app.errorhandler(400)
+def page_not_found(e):
+    return render_template('code_400.html'), 400
 
-    # Handle the checkout.session.completed event
-    if event['type'] == 'checkout.session.completed':
-        session = event['data']['object']
-        print(session)
-        line_items = stripe.checkout.Session.list_line_items(session['id'], limit=1)
-        print(line_items['data'][0]['description'])
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('code_403.html'), 403
 
-    return redirect(url_for('/success')), success.return_response(message='Successfully Completed', status=200)
-'''
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('code_404.html'), 404
+
+@app.errorhandler(405)
+def page_not_found(e):
+    return render_template('code_405.html'), 405
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('code_500.html'), 500
+
 app.run(debug=True)
