@@ -8,9 +8,11 @@
         {% for i in products %}
             <h3><a href="productdetails/{{i.id}}">{{ i.productname }}</a></h3>
             <img src="{{ i.imageurl }}" alt="product image" width="200">
-            <h6 style="margin:10px">Price: {{ i.price }}$</h6>
+            <h6 class="font1 font-size" style="margin:10px">Price: ${{ i.price }}</h6>
             <form action="/product" method="post">
-                <input name="pid" type="hidden" value="{{ i.id }}">
+                <input name="pid" type="hidden" value="{{ i.id }}">          
+                No of products:                
+                <input type="number" style="width:111px" placeholder="No of products" name="quantity" value="1" min="1" max="{{i.stock}}">
                 <input type="submit" value="Add to Cart">
             </form>
         {% endfor %}

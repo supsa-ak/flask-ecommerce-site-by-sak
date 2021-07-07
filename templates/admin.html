@@ -10,6 +10,7 @@
         <input type="text" placeholder="Product Name" name="pname">
         <input type="text" placeholder="Image url" name="imgurl">
         <input type="text" placeholder="Price" name="price">
+        <input type="text" placeholder="stock" name="stock">
         <input type="submit" value="Add Product">
     </form>     
 </div>
@@ -20,7 +21,8 @@
         {% for i in products %}
             <h3>{{ i.productname }}</h3>
             <img src="{{ i.imageurl }}" alt="product image" width="200">
-            <h6>Price: ${{ i.price }}</h6>
+            <h6 class="font1 font-size">Price: ${{ i.price }}</h6>
+            <h6 class="font-size">Stock: {{ i.stock }}</h6>
             <a href="/update/{{ i.id }}">Update</a>
             <a href="/delete/{{ i.id }}">Delete</a>
         {% endfor %}

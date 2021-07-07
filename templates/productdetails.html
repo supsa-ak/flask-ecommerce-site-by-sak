@@ -6,9 +6,15 @@
     <div class="container">
         <h3>{{ productDetails.productname }}</h3>
         <img src="{{ productDetails.imageurl }}" alt="product image" width="600">
-        <h6>Price: {{ productDetails.price }}$</h6>
-        <form action="{{url_for('product')}}" method="post">
+        <h6 class="font1 font-size">Price: ${{ productDetails.price }}</h6>
+        <!-- <form action="{{url_for('cart')}}" method="post">
             <input name="pid" type="hidden" value="{{ productDetails.id }}">
+            <input type="submit" value="Add to Cart">
+        </form> -->
+        <form action="/product" method="post">
+            <input name="pid" type="hidden" value="{{ productDetails.id }}">       
+            No of products:                   
+            <input type="number" style="width:111px" placeholder="No of products" name="quantity" value="1" min="1" max="{{productDetails.stock}}">
             <input type="submit" value="Add to Cart">
         </form>
     </div>

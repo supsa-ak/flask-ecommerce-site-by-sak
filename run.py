@@ -1,14 +1,16 @@
-from flask import Flask, render_template, request, redirect, session, url_for, jsonify
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify, flash
 from flask_http_response import success, result, error
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from datetime import datetime
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop.db'
 app.config['SECRET_KEY'] = 'qpowiecmnIhpjasdIaY'
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 def MagerDicts(dict1,dict2):
     if isinstance(dict1, list) and isinstance(dict2,list):
@@ -21,6 +23,7 @@ class Shop(db.Model):
     productname = db.Column(db.String(200), nullable=False)
     imageurl = db.Column(db.String(500), nullable=False)
     price = db.Column(db.Integer, nullable=False)
+    stock = db.Column(db.Integer, default=5)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self): 
@@ -33,43 +36,44 @@ def home():
     title = "Home"
     return redirect(url_for('product'))
 
+total = 0
+
+@app.route('/total')
+def totalfun():
+    total = 0 
+    if 'Shoppingcart' not in session or len(session['Shoppingcart'])<=0:
+        return redirect(url_for('home'))
+    subtotal = 0
+    grandtotal = 0
+    for key, product in session['Shoppingcart'].items():
+            total +=  float(product['price'])  * int(product['quantity'])
+            t = "%.2f" % total
+    return t
 
 @app.route('/cart', methods=['POST', 'GET'])
 def cart():
     title = "Cart"
-    total = 0 
-    if 'Shoppingcart' not in session or len(session['Shoppingcart'])<=0:
-        return redirect(url_for('home'))
-    for key, product in session['Shoppingcart'].items():
-        total += float(product['price']) 
-        t = "%.2f" % total
-    return render_template('cart.html', title=title, total=t)
+    return render_template('cart.html', title=title, total=totalfun)
 
-@app.route('/checkout', methods=['POST', 'GET'])
+@app.route('/checkout', methods=['POST'])
 def checkout():
     title = "Checkout"
-    t = 0
-    try:
-        if request.method == "POST":
-            t = request.form.get('total')
-            print(t)
-            return render_template('checkout.html', title=title, t=t)
-    except:
-        return "Cant add total"
-
-    return render_template('checkout.html', title=title, t=t)
+    return render_template('checkout.html', title=title, t=totalfun())
 
 @app.route('/product', methods=['POST', 'GET'])
 def product():
     title = "Home | Products"
     products = Shop.query.order_by(Shop.date_created)
+    quantity = 1
     try:
         id  = request.form.get('pid')
+        quantity = request.form.get('quantity')
+        # print(quantity)
         if id and request.method == "POST":
             product_cart = Shop.query.filter_by(id=id).first()
-            DictItems = {id:{'name':product_cart.productname, 'imgurl':product_cart.imageurl, 'price':product_cart.price}}
-            if 'Shoppingcart' in session:
-                print(session['Shoppingcart'])
+            DictItems = {id:{'id':product_cart.id, 'name':product_cart.productname, 'imgurl':product_cart.imageurl, 'quantity':quantity, 'price':product_cart.price}}
+            # print(DictItems)
+            if 'Shoppingcart' in session:                
                 if id in session['Shoppingcart']:
                     for key, item in session['Shoppingcart'].items():
                         if int(key) == int(id):
@@ -105,8 +109,8 @@ def admin():
         Product_Name = request.form['pname']
         Image_Url = request.form['imgurl']
         Product_Price = request.form['price']
-
-        new_product = Shop(productname=Product_Name, imageurl=Image_Url, price=Product_Price)
+        Stock = request.form['stock']
+        new_product = Shop(productname=Product_Name, imageurl=Image_Url, price=Product_Price, stock=Stock)
        
         try: 
             db.session.add(new_product)
@@ -125,6 +129,7 @@ def update(id):
         product_to_update.productname = request.form['pname']
         product_to_update.imageurl = request.form['imgurl']
         product_to_update.price = request.form['price']
+        product_to_update.stock = request.form['stock']
         try:
             db.session.commit()
             return redirect('/admin')

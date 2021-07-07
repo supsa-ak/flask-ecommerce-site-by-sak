@@ -8,7 +8,9 @@
                 <th>Sr</th>
                 <th>Image</th>
                 <th>Name</th>
+                <th>Quantity</th>
                 <th>Price</th>
+                <th>Subtotal</th>
                 <th>Remove</th>
             </thead>
             <tbody>
@@ -17,22 +19,24 @@
                     <td>{{ loop.index }}</td>
                     <td><img src="{{ product.imgurl }}" alt="image" width="50"></td>
                     <td>{{ product.name }}</td>
-                    <td>${{ product.price }}</td>
+                    <td>{{product.quantity}}</td>
+                    <td>${{ product.price}}</td>
+                    {% set subtotal = product.quantity|int * product.price|float %}
+                    <td>${{"%.2f"|format(subtotal) }}</td>                
                     <td><a href="{{url_for('delcartitem', id=key)}}">Remove</a></td>
                 </tr>
                 {% endfor %}
                 <tr>
                     <td></td>
                     <td>
-                        <form action="/checkout" method="POST">
-                            <input type="hidden" name="total" value="{{total}}">
+                        <form action="/checkout" method="POST">                           
                             <input type="submit" href="/checkout" value="Checkout">
                         </form>
                     </td>
                     <td><a href="{{url_for('clearcart')}}">Cancel(Clear Cart)</a></td>
                     <td></td>
                     <td>
-                        <h4>Grand Total: ${{total}}</h4>
+                        <h4>Grand Total: ${{ total() }}</h4>
                     </td>
                     <td></td>
                 </tr>
