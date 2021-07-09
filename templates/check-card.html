@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block css %} {% endblock css %}
+{% block title %} {{title}} {% endblock title %}
+{% block content %}
+<script>
+    var seconds = 0;
+    function displayseconds(){
+        seconds += 1;
+        document.getElementById("seconddisplay").innerText="Working with Gateway...";
+    }    
+    function submeter() {
+        document.checkout.submit();
+    }
+    setInterval(displayseconds, 1000);
+    function redirectpage(){
+        // window.location="/checkout";
+        submeter()
+    }
+    setTimeout('redirectpage()', 2000)
+
+</script>
+<h2 id="seconddisplay"></h2>
+<form action="/success" method="POST" name="checkout">
+    {% set total = t %}
+    <input type="hidden" name="purchase" value="{{ total }}">
+    <!-- <input type="submit" class="checkout-btn"> -->
+</form>
+{% endblock content %}

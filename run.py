@@ -52,12 +52,40 @@ def totalfun():
 @app.route('/cart', methods=['POST', 'GET'])
 def cart():
     title = "Cart"
+    if 'Shoppingcart' not in session or len(session['Shoppingcart'])<=0:
+        return redirect(url_for('home'))
     return render_template('cart.html', title=title, total=totalfun)
+
+@app.route('/check-cart', methods=['POST', 'GET'])
+def checkcart():
+    title = "Cart Check"
+    if 'Shoppingcart' in session:                
+        if id in session['Shoppingcart']:
+            for key, item in session['Shoppingcart'].items():
+                if int(key) == int(id):
+                    session.modified = True                        
+        return render_template('check-cart.html', title=title)
+    elif 'Shoppingcart' not in session or len(session['Shoppingcart'])<=0:
+        return redirect(url_for('home'))
+    else:
+        abort(404)
 
 @app.route('/checkout', methods=['POST'])
 def checkout():
     title = "Checkout"
     return render_template('checkout.html', title=title, t=totalfun())
+
+@app.route('/check-checkout', methods=['POST', 'GET'])
+def checkcheckout():
+    title = "Checkout Check"
+    if 'Shoppingcart' in session:                
+        if id in session['Shoppingcart']:
+            for key, item in session['Shoppingcart'].items():
+                if int(key) == int(id):
+                    session.modified = True                        
+        return render_template('check-checkout.html', title=title)
+    else:
+        abort(404)
 
 @app.route('/product', methods=['POST', 'GET'])
 def product():
@@ -107,6 +135,18 @@ def success():
         else: 
             return render_template('problem.html')
     
+@app.route('/check-card', methods=['POST', 'GET'])
+def checkcard():
+    title = "Checkout Card"
+    if 'Shoppingcart' in session:                
+        if id in session['Shoppingcart']:
+            for key, item in session['Shoppingcart'].items():
+                if int(key) == int(id):
+                    session.modified = True                        
+        return render_template('check-card.html', title=title, t=totalfun())
+    else:
+        abort(404)
+
 @app.route('/admin', methods=['POST', 'GET'])
 def admin():
     title = "Admin"

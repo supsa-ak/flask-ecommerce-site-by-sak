@@ -1,5 +1,8 @@
 {% extends 'index.html' %}
 {% block title %} {{ title }} {% endblock title %}
+{% block js %}
+
+{% endblock js %}
 
 {% block content %}
 <div class="container">
@@ -13,7 +16,7 @@
                 <input name="pid" type="hidden" value="{{ i.id }}">          
                 No of products:                
                 <input type="number" style="width:111px" placeholder="No of products" name="quantity" value="1" min="1" max="{{i.stock}}">
-                <input type="submit" value="Add to Cart">
+                <input name="submitcart" type="submit" value="Add to Cart">
             </form>
         {% endfor %}
     </div>

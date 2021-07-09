@@ -10,13 +10,16 @@
         .font1 {
             font-family: 'Courier New', Courier, monospace;
         }
-        .font-size{
+
+        .font-size {
             font-size: large;
         }
+
         a {
             text-decoration: none;
         }
     </style>
+    {% block js %} {% endblock js %}
     <title>{% block title %} {% endblock title %}</title>
 </head>
 
@@ -25,10 +28,24 @@
     <nav>
         <a href="{{url_for('home')}}">Home</a>
         <a href="/product">Products<a>
-        <a href="/cart">Cart({{ session['Shoppingcart']|length }})</a>
+        <!-- <a  type="submit" href="/cart">Cart({{ session['Shoppingcart']|length }})</a> -->
+        <form style="display: inline;" method="POST" action="/check-cart"  id="cartpage">
+            <button type="submit"><a href="/check-cart">Cart({{ session['Shoppingcart']|length }})</a></button>            
+        </form>
     </nav>
     {% endblock nav %}
     {% block content %} {% endblock content %}
+    <script>
+        const myCart = document.getElementById('cartpage');
+        myCart.addEventListener("submit", (e)=>{
+            e.preventDefault();
+            const request = new XMLHttpRequest();
+            request.open("post", "check-cart.html");
+            request.onload = function(){
+                console.log(request.responseText);
+            }
+        });
+    </script>
 </body>
 
 </html>
