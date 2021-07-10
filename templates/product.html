@@ -1,25 +1,29 @@
 {% extends 'index.html' %}
 {% block title %} {{ title }} {% endblock title %}
-{% block js %}
-
-{% endblock js %}
-
 {% block content %}
-<div class="container">
-    <h1>Products on Our Website</h1>
-    <div class="container">
-        {% for i in products %}
-            <h3><a href="productdetails/{{i.id}}">{{ i.productname }}</a></h3>
-            <img src="{{ i.imageurl }}" alt="product image" width="200">
-            <h6 class="font1 font-size" style="margin:10px">Price: ${{ i.price }}</h6>
-            <form action="/product" method="post">
-                <input name="pid" type="hidden" value="{{ i.id }}">          
-                No of products:                
-                <input type="number" style="width:111px" placeholder="No of products" name="quantity" value="1" min="1" max="{{i.stock}}">
-                <input name="submitcart" type="submit" value="Add to Cart">
-            </form>
-        {% endfor %}
-    </div>
-</div>
+
 
 {% endblock content %}
+{% block js %}
+<div id="app"></div>
+<script>
+    var products = JSON.parse('{{ products | tojson | safe}}');
+    console.log(products)
+    document.getElementById('app').innerHTML = `
+    <h1 class="app-title"> No of Products (${products.length} results)</h1>
+    ${products.map(function (p) {
+        return `
+        <div class="container m-4">
+            <h3><a href="productdetails/${p.id}">${p.name}</a></h3>
+                <img width=330 src="${p.imgurl}">
+            <h6 class="font1 font-size" style="margin:10px">Price: $${p.price}</h6>
+            <form action="/product" method="post">
+                <input name="pid" type="hidden" value="${ p.id }">    
+                <input name="submitcart" type="submit" value="Add to Cart">
+            </form>
+        </div>
+        `
+    }).join('')}
+    `
+</script>
+{% endblock js %}

@@ -1,23 +1,27 @@
 {% extends 'index.html' %}
 {% block title %} {{ title }} {% endblock title %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/productdetails.css') }}">
+{% endblock css %}
 
 {% block content %}
-<div class="container">
-    <div class="container">
-        <h3>{{ productDetails.productname }}</h3>
-        <img src="{{ productDetails.imageurl }}" alt="product image" width="600">
-        <h6 class="font1 font-size">Price: ${{ productDetails.price }}</h6>
-        <!-- <form action="{{url_for('cart')}}" method="post">
-            <input name="pid" type="hidden" value="{{ productDetails.id }}">
-            <input type="submit" value="Add to Cart">
-        </form> -->
-        <form action="/product" method="post">
-            <input name="pid" type="hidden" value="{{ productDetails.id }}">       
-            No of products:                   
-            <input type="number" style="width:111px" placeholder="No of products" name="quantity" value="1" min="1" max="{{productDetails.stock}}">
-            <input type="submit" value="Add to Cart">
-        </form>
-    </div>
-</div>
-
 {% endblock content %}
+{% block js %}
+<div id="app"></div>
+<script>
+    id = '{{id}}' - 1;
+    var products = JSON.parse('{{ products | tojson | safe}}');
+    document.getElementById('app').innerHTML = `
+    <h1 class="app-title"> No of Products (${products.length} results)</h1>
+    <div class="container m-4">
+            <h3>${products[id].name}</h3>
+            <img width=330 src="${products[id].imgurl}">
+            <h6 class="font1 font-size" style="margin:10px">Price: $${products[id].price}</h6>
+            <form action="/product" method="post">
+                <input name="pid" type="hidden" value="${ products[id].id }">    
+                <input name="submitcart" type="submit" value="Add to Cart">
+            </form>
+        </div>
+    `
+</script>
+{% endblock js %}
