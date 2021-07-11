@@ -25,7 +25,7 @@
         </p>
         <p>
             {% set total = t %}            
-            <input onclick="button_click()" type="submit" name="purchase" value="Purchase ${{ total }}" class="checkout-btn">
+            <input  type="submit" name="purchase" value="Purchase ${{ total }}" class="checkout-btn">
         </p>
     </form>
 </div>
@@ -39,12 +39,12 @@
         xml.open("POST","{{url_for('checkcard')}}",true); 
         xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         
-        dataSend= JSON.stringify({   });
+        dataSend= JSON.stringify({});
         xml.send(dataSend);
         
         xml.onload = function(){
             var dataReply = this.responseText;
-            // alert(dataReply)
+            alert(dataReply)
             // console.log(dataReply)
             if (dataReply == 200){
                 window.location.href = "{{url_for('success')}}";

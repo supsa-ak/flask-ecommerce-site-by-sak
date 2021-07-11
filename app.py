@@ -127,6 +127,7 @@ def checkcheckout():
 def checkcard():    
     if request.get_json:
         dataGet = request.get_json(force=True) 
+        print(dataGet)
         dataReply = 200
     else:         
         dataReply = 404
