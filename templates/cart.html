@@ -36,23 +36,37 @@
     <tr>
         <td></td>
         <td>
-            <form action="/checkout" method="POST">
-                <input type="submit" href="/checkout" value="Checkout">
-                </form>
+            <button  class="btn btn-outline-light" onclick="button_click()" type="submit" value="Checkout"></button> 
                 </td>
                 <td><a href="/clearcart">Cancel(Clear Cart)</a></td>
                 <td></td>
                 <td>
-                    <h4>Grand Total: ${{total}}</h4>
+                    <h4>Grand Total: ${{ total }}</h4>
                     </td>
                     <td></td>
                     </tr>
         `
+        function button_click() {
+            // console.log('hi')
+            var xml = new XMLHttpRequest();
+            xml.open("POST", "{{url_for('checkcheckout')}}", true);
+            xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            dataSend = JSON.stringify({});
+            xml.send(dataSend);
+
+            xml.onload = function () {
+                var dataReply = this.responseText;
+                // alert(dataReply)
+                // console.log(dataReply)
+                if (dataReply == 200) {
+                    window.location.href = "{{url_for('chekcout')}}";
+                } else {
+                    window.location.href = "{{url_for('error')}}";
+                }
+            };
+        }
 
 
-
-
-
-        
     </script>
     {% endblock js %}

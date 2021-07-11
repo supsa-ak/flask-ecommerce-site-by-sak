@@ -55,7 +55,7 @@ def productdetails(id):
     length = len(cart)
     return render_template('productdetails.html', title=title, l=length, products=products, id=id) 
 
-@app.route('/cart', methods=['POST', 'GET'])
+@app.route('/cart')
 def cart():
     title = "Cart"
     if len(cart)<=0:
@@ -87,13 +87,10 @@ def success():
         purchase = request.form.get('purchase')
         purchase = int(''.join(c for c in purchase if c.isdigit()))
         t = total()
-        print(t,' this is t here success ><')
-        print(purchase,' this is purchase here success ><')
         if purchase == t:
             return render_template('success.html', title=title, purchase=purchase)
         elif purchase != t:
-            # abort(417)
-            return 'HI'
+            abort(417)
         else: 
             return render_template('problem.html')
 
@@ -103,10 +100,42 @@ def shopapi(id):
     p = products[id] 
     return p
 
-@app.route('/shop_api')
+@app.route('/shop_api/')
 def shopallapi():
+    p = products
+    return jsonify(p)
 
-    return jsonify(products)
+@app.route('/check-cart', methods=['POST'])
+def checkcart():    
+    if request.get_json:
+        dataGet = request.get_json(force=True) 
+        dataReply = 200
+    else:         
+        dataReply = 404
+    return jsonify(dataReply)
+
+@app.route('/check-checkout', methods=['POST'])
+def checkcheckout():    
+    if request.get_json:
+        dataGet = request.get_json(force=True) 
+        dataReply = 200
+    else:         
+        dataReply = 404
+    return jsonify(dataReply)
+
+@app.route('/check-card', methods=['POST'])
+def checkcard():    
+    if request.get_json:
+        dataGet = request.get_json(force=True) 
+        dataReply = 200
+    else:         
+        dataReply = 404
+    return jsonify(dataReply)
+
+
+@app.route('/error')
+def error():
+    return render_template('code_404.html')
 
 @app.errorhandler(417)
 def page_not_found(e):   
@@ -120,9 +149,9 @@ def page_not_found(e):
 def page_not_found(e):
     return render_template('code_403.html'), 403
 
-# @app.errorhandler(404)
-# def page_not_found(e):
-#     return render_template('code_404.html'), 404
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('code_404.html'), 404
 
 @app.errorhandler(405)
 def page_not_found(e):
