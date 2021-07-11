@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, Response
+from flask import Flask, render_template, request, redirect, url_for, abort, Response, jsonify
 
 app = Flask(__name__)
 
@@ -97,9 +97,19 @@ def success():
         else: 
             return render_template('problem.html')
 
+@app.route('/shop_api/<int:id>')
+def shopapi(id): 
+    id = id - 1  
+    p = products[id] 
+    return p
+
+@app.route('/shop_api')
+def shopallapi():
+
+    return jsonify(products)
+
 @app.errorhandler(417)
-def page_not_found(e):
-   
+def page_not_found(e):   
     return render_template('code_417.html'), 417
 
 @app.errorhandler(400)
@@ -110,9 +120,9 @@ def page_not_found(e):
 def page_not_found(e):
     return render_template('code_403.html'), 403
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('code_404.html'), 404
+# @app.errorhandler(404)
+# def page_not_found(e):
+#     return render_template('code_404.html'), 404
 
 @app.errorhandler(405)
 def page_not_found(e):
