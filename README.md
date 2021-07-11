@@ -39,7 +39,7 @@ Install packages
 Step 6:
 Run the Flask app 
 
-- $python run.py
+- $python app.py
 
 
 Step 7:
