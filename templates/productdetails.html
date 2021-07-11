@@ -3,7 +3,7 @@
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/productdetails.css') }}">
 {% endblock css %}
-
+{% block cart %} Cart ({{ l }}){% endblock cart %}
 {% block content %}
 {% endblock content %}
 {% block js %}
@@ -18,10 +18,19 @@
             <img width=330 src="${products[id].imgurl}">
             <h6 class="font1 font-size" style="margin:10px">Price: $${products[id].price}</h6>
             <form action="/product" method="post">
-                <input name="pid" type="hidden" value="${ products[id].id }">    
+                <input name="pid" type="hidden" value="${ products[id].id }">   
+                <input name="quantity" type="number" value="${products[id].quantity}"  min="1" max="${products[id].stock}">  
                 <input name="submitcart" type="submit" value="Add to Cart">
             </form>
         </div>
     `
+
+
+
+
+
+
+
+    
 </script>
 {% endblock js %}

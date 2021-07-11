@@ -4,11 +4,12 @@
 
 
 {% endblock content %}
+{% block cart %} Cart ({{ l }}){% endblock cart %}
 {% block js %}
 <div id="app"></div>
 <script>
     var products = JSON.parse('{{ products | tojson | safe}}');
-    console.log(products)
+    // console.log(products)
     document.getElementById('app').innerHTML = `
     <h1 class="app-title"> No of Products (${products.length} results)</h1>
     ${products.map(function (p) {
@@ -18,12 +19,13 @@
                 <img width=330 src="${p.imgurl}">
             <h6 class="font1 font-size" style="margin:10px">Price: $${p.price}</h6>
             <form action="/product" method="post">
-                <input name="pid" type="hidden" value="${ p.id }">    
-                <input name="submitcart" type="submit" value="Add to Cart">
+                <input name="pid" type="hidden" value="${p.id}">    
+                <input name="quantity" type="number" value="${p.quantity}"  min="1" max="${p.stock}">    
+                <input type="submit" value="Add to Cart">
             </form>
         </div>
         `
     }).join('')}
-    `
+        `
 </script>
 {% endblock js %}

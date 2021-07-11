@@ -1,53 +1,58 @@
 {% extends 'index.html' %}
 {% block title %} {{ title }} {% endblock title %}
-{% block js %}
-<script>
-    
-</script>
-{% endblock js %}
-
+{% block cart %} Cart ({{ l }}){% endblock cart %}
 {% block content %}
-<div class="container">
-    <div class="row">
-        <table class="table table-sm">
-            <thead>
-                <th>Sr</th>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Subtotal</th>
-                <th>Remove</th>
-            </thead>
-            <tbody>
-                {% for key, product in session['Shoppingcart'].items() %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td><img src="{{ product.imgurl }}" alt="image" width="50"></td>
-                    <td>{{ product.name }}</td>
-                    <td>{{product.quantity}}</td>
-                    <td>${{ product.price}}</td>
-                    {% set subtotal = product.quantity|int * product.price|float %}
-                    <td>${{"%.2f"|format(subtotal) }}</td>                
-                    <td><a href="{{url_for('delcartitem', id=key)}}">Remove</a></td>
-                </tr>
-                {% endfor %}
-                <tr>
-                    <td></td>
-                    <td>
-                        <form action="/check-checkout" method="POST">                           
-                            <input type="submit" href="/check-checkout" value="Checkout">
-                        </form>
+
+<h1 class="app-title"> No of Products ({{ l }} results)</h1>
+<table class="table table-sm">
+    <thead>
+        <th></th>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Subtotal</th>
+        <th>Remove</th>
+    </thead>
+    {% endblock content %}
+
+    {% block js %}
+    <tbody id="app"></tbody>
+    <script>
+        var products = JSON.parse('{{ cart | tojson | safe}}');
+        // console.log(products)
+        document.getElementById('app').innerHTML = `
+        ${products.map(function (p) {
+            return `
+        <tr>            
+            <td><img src="${p.imgurl}" alt="image" width="50"></td>
+            <td>${p.name}</td>
+            <td>${p.quantity}</td>
+            <td>$${p.price}</td>        
+            <td>$${p.subtotal}</td>
+            <td><a href="/delete/${p.id}">Remove</a></td>
+        </tr>
+        `
+        }).join('')}    
+    <tr>
+        <td></td>
+        <td>
+            <form action="/checkout" method="POST">
+                <input type="submit" href="/checkout" value="Checkout">
+                </form>
+                </td>
+                <td><a href="/clearcart">Cancel(Clear Cart)</a></td>
+                <td></td>
+                <td>
+                    <h4>Grand Total: ${{total}}</h4>
                     </td>
-                    <td><a href="{{url_for('clearcart')}}">Cancel(Clear Cart)</a></td>
                     <td></td>
-                    <td>
-                        <h4>Grand Total: ${{ total() }}</h4>
-                    </td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-{% endblock content %}
+                    </tr>
+        `
+
+
+
+
+
+        
+    </script>
+    {% endblock js %}

@@ -3,11 +3,12 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/checkout.css') }}"> 
 {% endblock css %}
 {% block title %} {{ title }} {% endblock title %}
-
-{% block content %}
+{% block bootstrap %} {% endblock bootstrap %}
+{% block bootstrapjs %} {% endblock bootstrapjs %}
 {% block nav %} {% endblock nav %}
+{% block content %}
 <div class="container">
-    <form action="/check-card" name="card" method="POST" class="checkout">
+    <form action="/success" name="card" method="POST" class="checkout">
         <div class="checkout-header">
             <h1 class="checkout-title">
                 Checkout
@@ -23,10 +24,11 @@
             <input type="text" name="cvv" class="checkout-input checkout-cvc" placeholder="CVV">
         </p>
         <p>
-            {% set total = t %}
-            Purchase $
-            <input type="submit" name="purchase" value="{{ total }}" class="checkout-btn">
+            {% set total = t %}            
+            <input type="submit" name="purchase" value="Purchase ${{ total }}" class="checkout-btn">
         </p>
     </form>
 </div>
 {% endblock content %}
+
+{% block js %} {% endblock js %}
