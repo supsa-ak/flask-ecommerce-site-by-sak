@@ -75,24 +75,15 @@ def clearcart():
     cart.clear()
     return redirect(url_for('home'))
 
-@app.route('/checkout', methods=['POST'])
+@app.route('/checkout')
 def checkout():
     title = "Checkout"
     return render_template('checkout.html', title=title, t=total())
 
-@app.route('/success', methods=['POST'])
+@app.route('/success')
 def success():
     title = "Success"
-    if request.method == "POST":
-        purchase = request.form.get('purchase')
-        purchase = int(''.join(c for c in purchase if c.isdigit()))
-        t = total()
-        if purchase == t:
-            return render_template('success.html', title=title, purchase=purchase)
-        elif purchase != t:
-            abort(417)
-        else: 
-            return render_template('problem.html')
+    return render_template('success.html', title=title, purchase=total())
 
 @app.route('/shop_api/<int:id>')
 def shopapi(id): 
@@ -123,16 +114,14 @@ def checkcheckout():
         dataReply = 404
     return jsonify(dataReply)
 
-@app.route('/check-card', methods=['POST'])
-def checkcard():    
+@app.route('/check-payment', methods=['POST'])
+def checkpayment():       
     if request.get_json:
         dataGet = request.get_json(force=True) 
-        print(dataGet)
         dataReply = 200
     else:         
         dataReply = 404
     return jsonify(dataReply)
-
 
 @app.route('/error')
 def error():

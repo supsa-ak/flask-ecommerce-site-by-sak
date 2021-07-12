@@ -28,4 +28,27 @@
     }).join('')}
         `
 </script>
+
+<script>
+    function button_click(){
+        // console.log('hi')
+        var xml = new XMLHttpRequest();
+        xml.open("POST","{{url_for('checkcart')}}",true); 
+        xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        
+        dataSend= JSON.stringify({   });
+        xml.send(dataSend);
+        
+        xml.onload = function(){
+            var dataReply = this.responseText;
+            // alert(dataReply)
+            // console.log(dataReply)
+            if (dataReply == 200){
+                window.location.href = "{{url_for('cart')}}";
+            }else{
+                window.location.href = "{{url_for('error')}}";
+            }
+        };
+    }
+    </script>
 {% endblock js %}
