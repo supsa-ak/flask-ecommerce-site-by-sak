@@ -15,28 +15,34 @@ Clone Repository
 
 
 Step 2:
+
 Go to directory-> flask-ecommerce-site-by-sak
 
 
 Step 3:
+Delete Virtual Environment
+
+after pulling delete myenv folder in 'flask-ecommerce-site-by-sak' folder
+
+Step 4:
 Create Virtual Environment
 
 - $virtualenv myenv  
 
 
-Step 4:
+Step 5:
 Activate Virtual Environment 
 
 - $myenv/Scripts/activate
 
 
-Step 5:
+Step 6:
 Install packages 
 
 - $pip install -r requirements.txt
 
 
-Step 6:
+Step 7:
 Run the Flask app 
 
 - $python app.py
