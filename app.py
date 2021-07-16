@@ -100,7 +100,11 @@ def shopallapi():
 def checkcart():    
     if request.get_json:
         dataGet = request.get_json(force=True) 
-        dataReply = 200
+        # print(dataGet, "this is datag et")        
+        if dataGet == {"product":"product"}:
+            dataReply = 200
+        else:         
+            dataReply = 404
     else:         
         dataReply = 404
     return jsonify(dataReply)
@@ -109,7 +113,10 @@ def checkcart():
 def checkcheckout():    
     if request.get_json:
         dataGet = request.get_json(force=True) 
-        dataReply = 200
+        if dataGet == {"checkout":"checkout"}:
+            dataReply = 200  
+        else:         
+            dataReply = 404
     else:         
         dataReply = 404
     return jsonify(dataReply)
@@ -118,14 +125,17 @@ def checkcheckout():
 def checkpayment():       
     if request.get_json:
         dataGet = request.get_json(force=True) 
-        dataReply = 200
+        if dataGet == {"card":"card"}:
+            dataReply = 200  
+        else:         
+            dataReply = 404
     else:         
         dataReply = 404
     return jsonify(dataReply)
 
 @app.route('/error')
 def error():
-    return render_template('code_404.html')
+    abort (404)
 
 @app.errorhandler(417)
 def page_not_found(e):   

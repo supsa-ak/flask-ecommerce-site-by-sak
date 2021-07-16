@@ -1,6 +1,29 @@
 {% extends 'index.html' %}
-{% block css %} {% endblock css %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/error.css') }}"> {% endblock css %}
 {% block title %} Error!!! {% endblock title %}
 {% block content %}
-<h2>Resource has been modified</h2>
+<div id="notfound">
+    <div class="notfound">
+    <div>
+    <div class="notfound-404">
+    <h1>!</h1>
+    </div>
+    <h2>Error<br>417</h2>
+    </div>
+    <p>The page you are looking for might have been removed had its name changed or is temporarily unavailable. <a href="{{url_for('home')}}">Back to homepage</a></p>
+    </div>
+    </div>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'UA-23581568-13');
+    </script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"66fccd05088a6981","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.6.0","si":10}'></script>
+    </body>
 {% endblock content %}
+{% block footer %} {% endblock footer %}

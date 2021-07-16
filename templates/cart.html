@@ -1,95 +1,91 @@
-{% extends 'index.html' %}
-{% block title %} {{ title }} {% endblock title %}
-{% block cart %} Cart ({{ l }}){% endblock cart %}
-{% block content %}
-
-<h1 class="app-title"> No of Products ({{ l }} results)</h1>
-<table class="table table-sm">
+{% extends 'index.html' %} {% block title %} {{ title }} {% endblock title %} {% block cart %} Cart ({{ l }}){% endblock cart %} {% block content %}
+<small class="app-title"> <em>No of Products in Cart({{ l }} results)</em></small>
+<div class="container">
+<table class="table table-striped table-hover table-bordered">
     <thead>
         <th></th>
         <th>Name</th>
         <th>Quantity</th>
         <th>Price</th>
         <th>Subtotal</th>
-        <th>Remove</th>
+        <th></th>
     </thead>
-    {% endblock content %}
-
-    {% block js %}
-    <tbody id="app"></tbody>
-    <script>
-        var products = JSON.parse('{{ cart | tojson | safe}}');
-        // console.log(products)
-        document.getElementById('app').innerHTML = `
+    <tbody>
+        {% endblock content %} {% block js %}
+        <tbody id="app"></tbody>
+        <script>
+            var products = JSON.parse('{{ cart | tojson | safe}}');
+            // console.log(products)
+            document.getElementById('app').innerHTML = `
         ${products.map(function (p) {
-            return `
+                return `
         <tr>            
             <td><img src="${p.imgurl}" alt="image" width="50"></td>
             <td>${p.name}</td>
             <td>${p.quantity}</td>
             <td>$${p.price}</td>        
             <td>$${p.subtotal}</td>
-            <td><a href="/delete/${p.id}">Remove</a></td>
+            <!-- <td><a href="/delete/${p.id}">Remove</a></td> -->
+            <td><button onclick="window.location.href='/delete/${p.id}'" class="btn btn-danger">Remove</button></td>
         </tr>
         `
-        }).join('')}    
-    <tr>
+            }).join('')}    
+            </tbody>
+
+            <tr>
         <td></td>
         <td>
-            <button  class="btn btn-success" onclick="button_click2()" type="submit">Checkout</button>                                
+            <button class="btn btn-success" onclick="button_click2()" type="submit">Checkout</button>                                
                 </td>
-                <td><a href="/clearcart">Cancel(Clear Cart)</a></td>
+                <td><a href="/clearcart" class="btn btn-outline-danger">Cancel(Clear Cart)</a></td>
                 <td></td>
                 <td>
                     <h4>Grand Total: ${{ total }}</h4>
                     </td>
                     <td></td>
-                    </tr>
+                    </tr> 
+                </div>                 
         `
-    </script>
-    <script>
-        function button_click() {
-            console.log('hi')
-            var xml = new XMLHttpRequest();
-            xml.open("POST", "{{url_for('checkcart')}}", true);
-            xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        </script>
+        <script>
+            function button_click() {
+                var xml = new XMLHttpRequest();
+                xml.open("POST", "{{url_for('checkcart')}}", true);
+                xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-            dataSend = JSON.stringify({});
-            xml.send(dataSend);
+                dataSend = JSON.stringify({"product":"product"});
+                xml.send(dataSend);
 
-            xml.onload = function () {
-                var dataReply = this.responseText;
-                // alert(dataReply)
-                // console.log(dataReply)
-                if (dataReply == 200) {
-                    window.location.href = "{{url_for('cart')}}";
-                } else {
-                    window.location.href = "{{url_for('error')}}";
-                }
-            };
-        }
-      
-        function button_click2() {
-            console.log('hi')
-            var xml = new XMLHttpRequest();
-            xml.open("POST", "{{url_for('checkcheckout')}}", true);
-            xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xml.onload = function() {
+                    var dataReply = this.responseText;
+                    // alert(dataReply)
+                    // console.log(dataReply)
+                    if (dataReply == 200) {
+                        window.location.href = "{{url_for('cart')}}";
+                    } else {
+                        window.location.href = "{{url_for('error')}}";
+                    }
+                };
+            }
 
-            dataSend = JSON.stringify({});
-            xml.send(dataSend);
+            function button_click2() {
+                var xml = new XMLHttpRequest();
+                xml.open("POST", "{{url_for('checkcheckout')}}", true);
+                xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-            xml.onload = function () {
-                var dataReply = this.responseText;
-                // alert(dataReply)
-                // console.log(dataReply)
-                if (dataReply == 200) {
-                    window.location.href = "{{url_for('checkout')}}";
-                } else {
-                    window.location.href = "{{url_for('error')}}";
-                }
-            };
-        }
+                dataSend = JSON.stringify({"checkout":"checkout"});
+                xml.send(dataSend);
 
-
-    </script>
-    {% endblock js %}
+                xml.onload = function() {
+                    var dataReply = this.responseText;
+                    // alert(dataReply)
+                    // console.log(dataReply)
+                    if (dataReply == 200) {
+                        window.location.href = "{{url_for('checkout')}}";
+                    } else {
+                        window.location.href = "{{url_for('error')}}";
+                    }
+                };
+            }
+        </script>
+        {% endblock js %} {% block footer %} {% endblock footer %}

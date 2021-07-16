@@ -1,14 +1,9 @@
-{% extends 'index.html' %}
-{% block css %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/checkout.css') }}"> 
-{% endblock css %}
-{% block title %} {{ title }} {% endblock title %}
-{% block bootstrap %} {% endblock bootstrap %}
-{% block bootstrapjs %} {% endblock bootstrapjs %}
-{% block nav %} {% endblock nav %}
-{% block content %}
+{% extends 'index.html' %} {% block css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/checkout.css') }}"> {% endblock css %} {%
+block title %} {{ title }} {% endblock title %} {% block bootstrap %} {% endblock bootstrap %} {% block bootstrapjs %}
+{% endblock bootstrapjs %} {% block nav %} {% endblock nav %} {% block content %}
 <div class="container">
-    <form action="/check-payment" name="card" method="POST" class="checkout">
+    <form name="card" action="/check-payment" id="card" method="POST" class="checkout">
         <div class="checkout-header">
             <h1 class="checkout-title">
                 Checkout
@@ -20,40 +15,42 @@
             <input type="number" name="year" class="checkout-input checkout-exp" min="21" max="30" placeholder="YY">
         </p>
         <p>
-            <input type="number" name="cardno" class="checkout-input checkout-card" min="" max="" placeholder="4111 1111 1111 1111">
+            <input type="number" name="cardno" class="checkout-input checkout-card" min="" max=""
+                placeholder="4111 1111 1111 1111">
             <input type="text" name="cvv" class="checkout-input checkout-cvc" placeholder="CVV">
         </p>
         <p>
-            {% set total = t %}            
+            {% set total = t %}
             <!-- <input  type="submit" onclick="button_click()" name="purchase" value="Purchase ${{ total }}" class="checkout-btn"> -->
-            <button onclick="button_click()" type="submit" class="checkout-btn" name="purchase" value="{{total}}">Purchase ${{ total }}</button>
         </p>
     </form>
+    <div class="container btn">
+        <button onclick="button_click()" type="submit" class="checkout-btn" name="purchase" value="{{total}}">Purchase
+            ${{ total }}</button>
+    </div>
 </div>
-{% endblock content %}
-
-{% block js %} 
+{% endblock content %} {% block js %}
 <script>
-   function button_click(){
-            // console.log('hi')
-            // alert("hi")
-            var xml = new XMLHttpRequest();
-            xml.open("POST","{{url_for('checkpayment')}}",true); 
-            xml.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            
-            dataSend= JSON.stringify({   });
-            xml.send(dataSend);
-            
-            xml.onload = function(){
-                var dataReply = this.responseText;
-                // console.log(dataReply)
-                if (dataReply == 200){
-                    // alert(dataReply)
-                    window.location.href = "{{url_for('success')}}";
-                }else{
-                    window.location.href = "{{url_for('error')}}";
-                }
-            };
-        }
+    function button_click() {
+        // console.log('hi')
+        // alert("hi")
+        var xml = new XMLHttpRequest();
+        xml.open("POST", "{{url_for('checkpayment')}}", true);
+        xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        dataSend = JSON.stringify({ "card": "card" });
+        xml.send(dataSend);
+
+        xml.onload = function () {
+            var dataReply = this.responseText;
+            // console.log(dataReply)
+            if (dataReply == 200) {
+                // alert(dataReply)
+                window.location.href = "{{url_for('success')}}";
+            } else {
+                window.location.href = "{{url_for('error')}}";
+            }
+        };
+    }
 </script>
-{% endblock js %}
+{% endblock js %} {% block footer %} {% endblock footer %}
